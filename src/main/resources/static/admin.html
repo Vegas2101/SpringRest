@@ -63,7 +63,6 @@
     </div>
 </div>
 
-<!-- Edit User Modal -->
 <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -157,8 +156,7 @@
 
                 const roleSelect = document.getElementById("roles");
                 roleSelect.innerHTML = "";
-                // Assuming roles are loaded separately or available globally
-                fetch("/api/admin/roles") // Предположим, что у вас есть такой эндпоинт
+                fetch("/api/admin/roles")
                     .then(response => response.json())
                     .then(roles => {
                         roles.forEach(role => {
@@ -180,19 +178,19 @@
             id: parseInt(userId), // Преобразуем id в число
             firstName: document.getElementById("firstName").value,
             lastName: document.getElementById("lastName").value,
-            age: parseInt(document.getElementById("age").value), // Преобразуем age в число
+            age: parseInt(document.getElementById("age").value),
             email: document.getElementById("email").value,
-            password: document.getElementById("password").value || null // Если пароль не введен, отправляем null
+            password: document.getElementById("password").value || null
         };
 
-        const roleIds = Array.from(document.getElementById("roles").selectedOptions).map(option => parseInt(option.value)); // Преобразуем roleIds в числа
+        const roleIds = Array.from(document.getElementById("roles").selectedOptions).map(option => parseInt(option.value));
 
         const requestBody = {
             user: user,
             roleIds: roleIds
         };
 
-        console.log(JSON.stringify(requestBody)); // Для отладки
+        console.log(JSON.stringify(requestBody));
 
         fetch(`/api/admin/${userId}`, {
             method: 'PUT',

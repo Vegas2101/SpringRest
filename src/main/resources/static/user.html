@@ -68,10 +68,10 @@
     });
 
     function loadUserInfo() {
-        fetch("/api/user") // Замените на ваш API endpoint для получения данных пользователя
+        fetch("/api/user")
             .then(response => response.json())
             .then(data => {
-                // Обновляем информацию о пользователе в DOM
+
                 document.getElementById("username").textContent = data.email;
                 document.getElementById("user-roles").textContent = data.roles.map(role => role.authority).join(", ");
                 document.getElementById("user-id").textContent = data.id;
@@ -81,23 +81,22 @@
                 document.getElementById("user-email").textContent = data.email;
                 document.getElementById("user-roles-list").textContent = data.roles.map(role => role.authority).join(", ");
 
-                // Проверка роли ROLE_ADMIN
+
                 const isAdmin = data.roles.some(role => role.authority === "ROLE_ADMIN");
                 if (!isAdmin) {
-                    // Скрываем кнопку Admin, если у пользователя нет роли ROLE_ADMIN
+
                     document.getElementById("admin-link").style.display = "none";
                 }
             })
             .catch(error => console.error('Error fetching user data:', error));
     }
 
-    // Обработка выхода
     document.getElementById("logout-btn").addEventListener("click", function(event) {
         event.preventDefault();
         fetch("/logout", { method: 'POST' })
             .then(response => {
                 if (response.ok) {
-                    window.location.href = "/login"; // Перенаправляем на страницу входа
+                    window.location.href = "/login";
                 }
             })
             .catch(error => console.error('Error logging out:', error));

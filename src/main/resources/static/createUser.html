@@ -80,7 +80,7 @@
                                 <select class="form-select" name="roles" multiple required
                                         style="width: 75%; margin: auto;"
                                         id="roles-select">
-                                    <!-- Роли будут загружены через JavaScript -->
+
                                 </select>
                             </div>
                             <div class="text-center">
@@ -97,20 +97,18 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {
-        // Ваш код
+
     });
 </script>
 <script>
     $(document).ready(function () {
-        // Загружаем информацию о текущем пользователе
-        loadUserInfo();
 
-        // Загружаем роли при загрузке страницы
+        loadUserInfo();
         loadRoles();
 
-        // Обработка отправки формы
+
         $('#create-user-form').on('submit', function (event) {
-            event.preventDefault(); // Предотвращаем стандартную отправку формы
+            event.preventDefault();
 
             const formData = {
                 firstName: $('input[name="firstName"]').val(),
@@ -118,10 +116,9 @@
                 age: $('input[name="age"]').val(),
                 email: $('input[name="email"]').val(),
                 password: $('input[name="password"]').val(),
-                roles: $('#roles-select').val() // Получаем выбранные роли
+                roles: $('#roles-select').val()
             };
 
-            // Отправляем данные на сервер
             fetch('/api/admin', {
                 method: 'POST',
                 headers: {
@@ -150,10 +147,10 @@
                 .then(data => {
                     $('#success-message').text('User created successfully!').show();
                     $('#error-message').hide();
-                    $('#create-user-form')[0].reset(); // Очищаем форму
+                    $('#create-user-form')[0].reset();
                     setTimeout(() => {
-                        window.location.href = '/admin.html'; // Перенаправляем на страницу admin.html
-                    }, 2000); // Перенаправление через 2 секунды
+                        window.location.href = '/admin.html';
+                    }, 2000);
                 })
                 .catch(error => {
                     $('#error-message').text(error.message || 'Error creating user').show();
@@ -162,7 +159,6 @@
         });
     });
 
-    // Функция для загрузки информации о текущем пользователе
     function loadUserInfo() {
         fetch("/api/user")
             .then(response => response.json())
@@ -172,7 +168,6 @@
             });
     }
 
-    // Функция для загрузки ролей
     function loadRoles() {
         fetch('/api/admin/roles')
             .then(response => {
@@ -183,9 +178,8 @@
             })
             .then(roles => {
                 const rolesSelect = document.getElementById('roles-select');
-                rolesSelect.innerHTML = ''; // Очищаем список ролей
+                rolesSelect.innerHTML = '';
 
-                // Добавляем роли в выпадающий список
                 roles.forEach(role => {
                     const option = document.createElement('option');
                     option.value = role.id;

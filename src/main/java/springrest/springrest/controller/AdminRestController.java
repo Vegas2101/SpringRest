@@ -80,7 +80,7 @@ public class AdminRestController {
             existingUser.setEmail(updatedUser.getEmail());
         }
         if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
-            existingUser.setPassword(passwordEncoder.encode(updatedUser.getPassword())); // Хешируем пароль
+            existingUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
         }
 
         Set<Long> roleIds = request.getRoleIds();
