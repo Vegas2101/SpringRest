@@ -67,6 +67,12 @@
         loadUserInfo();
     });
 
+    document.querySelector('a[href="/user.html"]').addEventListener("click", function(event) {
+        if (window.location.pathname === "/user.html") {
+            event.preventDefault();
+        }
+    });
+
     function loadUserInfo() {
         fetch("/api/user")
             .then(response => response.json())
