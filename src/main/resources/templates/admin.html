@@ -171,6 +171,7 @@
                 <h5 class="modal-title">Edit User</h5>
             </div>
             <div class="modal-body">
+                <div id="edit-error-message" class="alert alert-danger" style="display: none;"></div>
                 <div id="edit-success-message" class="alert alert-success" role="alert" style="display: none;"></div>
                 <form>
                     <input type="hidden" id="hiddenUpdateUserId">
@@ -279,6 +280,7 @@
             });
     }
 
+
     function loadUserData(userId) {
         fetch(`/api/admin/${userId}`)
             .then(response => response.json())
@@ -317,8 +319,8 @@
             email: document.getElementById("email").value,
             password: document.getElementById("password").value || null
         };
-
-        const roleIds = Array.from(document.getElementById("roles").selectedOptions).map(option => parseInt(option.value));
+        const roleIds = Array.from(document.getElementById("roles").selectedOptions)
+            .map(option => parseInt(option.value));
 
         const requestBody = {
             user: user,
@@ -327,35 +329,32 @@
 
         fetch(`/api/admin/${userId}`, {
             method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(requestBody)
-        }).then(response => {
-            if (response.ok) {
-                $('#edit-success-message').text('User updated successfully!').show();
-                $('#edit-error-message').hide();
-                loadUsersTable();
+        })
+            .then(response => {
                 $('#editUserModal').modal('hide');
-            } else {
-                return response.json().then(err => {
-                    throw new Error(err.message || 'Failed to update user');
-                });
-            }
-        }).catch(error => {
-            $('#edit-error-message').text(error.message || 'Error updating user').show();
-            $('#edit-success-message').hide();
-        });
+            })
+            .catch(error => {
+                console.error("Ошибка:", error);
+            })
+            .finally(() => {
+                loadUsersTable();
+            });
     }
 
+
     function deleteUser(userId) {
-        fetch(`/api/admin/${userId}`, {
-            method: 'DELETE'
-        }).then(response => {
-            if (response.ok) {
-                loadUsersTable();
-            }
-        });
+
+        fetch(`/api/admin/${userId}`, {method: 'DELETE'})
+            .then(response => {
+                if (response.ok) {
+                    loadUsersTable();
+                } else {
+                    throw new Error('Failed to delete user');
+                }
+            })
+            .catch(error => alert("Error: " + error.message));
     }
 
     function loadRoles() {
@@ -398,9 +397,7 @@
 
             fetch('/api/admin', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
                     user: {
                         firstName: formData.firstName,
@@ -421,10 +418,11 @@
                         });
                     }
                 })
-                .then(data => {
+                .then(() => {
                     $('#success-message').text('User created successfully!').show();
                     $('#error-message').hide();
                     $('#create-user-form')[0].reset();
+                    loadUsersTable();
                 })
                 .catch(error => {
                     $('#error-message').text(error.message || 'Error creating user').show();

@@ -21,10 +21,10 @@
     <div class="bg-light p-3" style="width: 300px; height: 100vh;">
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link text-dark" href="/admin.html" id="admin-link">Admin</a>
+                <a class="nav-link text-dark" href="/admin" id="admin-link">Admin</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link active text-white bg-primary" href="/user.html">User</a>
+                <a class="nav-link active text-white bg-primary" href="/user">User</a>
             </li>
         </ul>
     </div>
@@ -67,8 +67,8 @@
         loadUserInfo();
     });
 
-    document.querySelector('a[href="/user.html"]').addEventListener("click", function(event) {
-        if (window.location.pathname === "/user.html") {
+    document.querySelector('a[href="/user"]').addEventListener("click", function(event) {
+        if (window.location.pathname === "/user") {
             event.preventDefault();
         }
     });
